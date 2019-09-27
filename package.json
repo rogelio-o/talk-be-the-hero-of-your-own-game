@@ -1,0 +1,34 @@
+{
+  "name": "talk-be-the-hero-of-your-own-game",
+  "version": "1.0.0",
+  "description": "From zero to be the hero of your own game",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack -p",
+    "start": "webpack-dev-server -d --content-base ./public",
+    "lint": "tslint -c tslint.json 'src/**/*.ts'"
+  },
+  "contributors": [
+    {
+      "name": "Rogelio Orts",
+      "email": "yo@rogelioorts.com",
+      "url": "https://rogelioorts.com"
+    },
+    {
+      "name": "Rafael Bermúdez"
+    },
+    {
+      "name": "Pablo González"
+    }
+  ],
+  "devDependencies": {
+    "clean-webpack-plugin": "^3.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "ts-loader": "^6.1.1",
+    "tslint": "^5.20.0",
+    "typescript": "^3.6.3",
+    "webpack": "^4.40.2",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.1"
+  }
+}

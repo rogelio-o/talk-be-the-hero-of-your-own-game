@@ -9,22 +9,27 @@ import { IGlyphText } from "./IGlyphText";
 export interface IGlyphFactory {
   group(glyphs: IGlyph[]): GlyphGroup;
 
-  circle(color: string, x: number, y: number, radio: number): IGlyphCircle;
+  circle(
+    color: string,
+    x: number,
+    y: number,
+    radio: number | string,
+  ): IGlyphCircle;
 
   image(
     img: string,
     x: number,
     y: number,
-    w?: number,
-    h?: number,
+    w?: number | string,
+    h?: number | string,
   ): Promise<IGlyphImage>;
 
   rectangle(
     color: string,
     x: number,
     y: number,
-    w: number,
-    h: number,
+    w: number | string,
+    h: number | string,
   ): IGlyphRectangle;
 
   sprite(
@@ -33,8 +38,8 @@ export interface IGlyphFactory {
     rows: number,
     x: number,
     y: number,
-    w?: number,
-    h?: number,
+    w?: number | string,
+    h?: number | string,
   ): Promise<IGlyphSprite>;
 
   text(

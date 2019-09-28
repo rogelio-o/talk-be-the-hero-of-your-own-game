@@ -9,11 +9,11 @@ export interface IGlyphSprite extends IGlyph {
 
   sequence(indexes: number[], fps?: number): void;
 
-  setSize(w: number, h: number): void;
+  setSize(w: number | string, h: number | string): void;
 
-  setWidth(w: number): void;
+  setWidth(w: number | string): void;
 
-  setHeight(h: number): void;
+  setHeight(h: number | string): void;
 
   flip(): void;
 }

@@ -45,8 +45,8 @@ export class CanvasGlyphFactory implements IGlyphFactory {
     img: string,
     x: number,
     y: number,
-    w?: number,
-    h?: number,
+    w?: number | string,
+    h?: number | string,
   ): Promise<IGlyphImage> {
     const glyph = new CanvasGlyphImage(this.renderEngine);
     glyph.setPosition({ x, y });
@@ -65,8 +65,8 @@ export class CanvasGlyphFactory implements IGlyphFactory {
     color: string,
     x: number,
     y: number,
-    w: number,
-    h: number,
+    w: number | string,
+    h: number | string,
   ): IGlyphRectangle {
     const rectangle = new CanvasGlyphRectangle(this.renderEngine);
     rectangle.setColor(color);
@@ -82,8 +82,8 @@ export class CanvasGlyphFactory implements IGlyphFactory {
     rows: number,
     x: number,
     y: number,
-    w?: number,
-    h?: number,
+    w?: number | string,
+    h?: number | string,
   ): Promise<IGlyphSprite> {
     const glyph = new CanvasGlyphSprite(this.renderEngine);
     glyph.setPosition({ x, y });

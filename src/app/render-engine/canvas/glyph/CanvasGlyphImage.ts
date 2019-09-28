@@ -53,7 +53,7 @@ export class CanvasGlyphImage extends AbstractCanvasGlyph
   public render(): void {
     const context = this.renderEngine.canvas.getContext("2d");
 
-    const positionToDraw = this.getPositionToDraw();
+    const positionToDraw = this.getAbsolutePosition();
     const x = positionToDraw.x;
     const y = positionToDraw.y;
 

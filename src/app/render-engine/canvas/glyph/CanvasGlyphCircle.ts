@@ -33,7 +33,7 @@ export class CanvasGlyphCircle extends AbstractCanvasGlyph
 
     if (context) {
       const r = this.r;
-      const positionToDraw = this.getPositionToDraw();
+      const positionToDraw = this.getAbsolutePosition();
       const x = positionToDraw.x + r;
       const y = positionToDraw.y + r;
 

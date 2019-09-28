@@ -17,6 +17,8 @@ export interface IGlyph {
 
   getPosition(): IPosition;
 
+  getAbsolutePosition(): IPosition;
+
   setOrigin(origin: Origin): void;
 
   getWidth(): number;

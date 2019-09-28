@@ -5,15 +5,15 @@ export function collide(
   g2: IGlyph,
   speed: { top?: number; bottom?: number; left?: number; right?: number },
 ) {
-  const leftTopCornerA = g1.getPosition();
-  const leftTopCornerB = g2.getPosition();
+  const leftTopCornerA = g1.getAbsolutePosition();
+  const leftTopCornerB = g2.getAbsolutePosition();
   const rightBottomCornerA = {
-    x: g1.getPosition().x + g1.getWidth(),
-    y: g1.getPosition().y + g1.getHeight(),
+    x: leftTopCornerA.x + g1.getWidth(),
+    y: leftTopCornerA.y + g1.getHeight(),
   };
   const rightBottomCornerB = {
-    x: g2.getPosition().x + g2.getWidth(),
-    y: g2.getPosition().y + g2.getHeight(),
+    x: leftTopCornerB.x + g2.getWidth(),
+    y: leftTopCornerB.y + g2.getHeight(),
   };
 
   return !(

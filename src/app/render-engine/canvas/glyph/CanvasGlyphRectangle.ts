@@ -35,7 +35,7 @@ export class CanvasGlyphRectangle extends AbstractCanvasGlyph
     const context = this.renderEngine.canvas.getContext("2d");
 
     if (context) {
-      const positionToDraw = this.getPositionToDraw();
+      const positionToDraw = this.getAbsolutePosition();
       const x = positionToDraw.x;
       const y = positionToDraw.y;
 

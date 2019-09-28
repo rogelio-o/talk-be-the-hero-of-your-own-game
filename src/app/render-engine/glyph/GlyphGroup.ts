@@ -67,11 +67,15 @@ export class GlyphGroup implements IGlyph {
     let y = 0;
 
     this.glyphs.forEach((g) => {
-      x = Math.min(x, g.getPosition().x);
-      y = Math.min(y, g.getPosition().y);
+      x = Math.min(x, g.getAbsolutePosition().x);
+      y = Math.min(y, g.getAbsolutePosition().y);
     });
 
     return { x, y };
+  }
+
+  public getAbsolutePosition(): IPosition {
+    return this.getPosition();
   }
 
   public setOrigin(origin: Origin): void {

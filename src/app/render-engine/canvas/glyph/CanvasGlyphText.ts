@@ -51,7 +51,7 @@ export class CanvasGlyphText extends AbstractCanvasGlyph implements IGlyphText {
           context.textAlign = "left";
       }
 
-      const positionToDraw = this.getPositionToDraw();
+      const positionToDraw = this.getAbsolutePosition();
       context.font = this.h + "px Arial";
       context.fillStyle = this.color;
       context.fillText(this.text, positionToDraw.x, positionToDraw.y + this.h);

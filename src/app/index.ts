@@ -10,8 +10,17 @@ import { collide } from "./utils/collisionUtils";
 import { Direction } from "./utils/Direction";
 import { Origin } from "./utils/Origin";
 
-const canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
+const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const renderEngine: IRenderEngine = new CanvasRenderEngine(canvas);
+
+window.addEventListener("resize", resizeCanvas, false);
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  renderEngine.render();
+}
+resizeCanvas();
 
 const soundEngine: ISoundEngine = new BrowserSoundEngine();
 const motionEngine: IMotionEngine = new KeyboardMotionEngine(canvas);
@@ -19,19 +28,19 @@ motionEngine.listen();
 
 const background: IGlyphRectangle = renderEngine
   .factory()
-  .rectangle("white", 0, 0, 578, 200);
+  .rectangle("white", 0, 0, 10000, 10000);
 renderEngine.add(background);
 
 const loadingText = renderEngine
   .factory()
-  .text("Loading...", "black", 250, 100, 20);
+  .text("Loading...", "black", 0, 0, 20);
 loadingText.setOrigin(Origin.CENTER);
 renderEngine.add(loadingText);
 
 const resources = Promise.all([
   soundEngine.add("punch", "audio/punch.mp3"),
-  renderEngine.factory().sprite("/billylee.png", 7, 2, 0, 0, 100),
-  renderEngine.factory().sprite("/billylee.png", 7, 2, 400, 0, 100),
+  renderEngine.factory().sprite("/billylee.png", 7, 2, 0, 70, 200),
+  renderEngine.factory().sprite("/billylee.png", 7, 2, 0, 70, 200),
 ]);
 resources
   .then(([, player1, player2]) => {
@@ -56,6 +65,9 @@ resources
     const lifePlayer2 = renderEngine.factory().rectangle("red", 20, 20, 0, 30);
     lifePlayer2.setOrigin(Origin.BOTTOM_RIGHT);
     renderEngine.add(lifePlayer2);
+
+    player1.setOrigin(Origin.BOTTOM_LEFT);
+    player2.setOrigin(Origin.BOTTOM_RIGHT);
 
     renderEngine.add(player1);
     renderEngine.add(player2);
@@ -103,7 +115,7 @@ resources
       Intention.LEFT,
       () => {
         player1.move(Direction.LEFT, speed, () => {
-          if (collide(player1, player2, { left: speed })) {
+          if (collide(player1, player2, { left: speed, right: -155 })) {
             player1.pause();
           }
         });
@@ -115,7 +127,7 @@ resources
       Intention.RIGHT,
       () => {
         player1.move(Direction.RIGHT, speed, () => {
-          if (collide(player1, player2, { right: speed })) {
+          if (collide(player1, player2, { right: -150 })) {
             player1.pause();
           }
         });

@@ -104,13 +104,7 @@ export abstract class AbstractCanvasGlyph implements IGlyph {
     this.origin = origin;
   }
 
-  public abstract getWidth(): number;
-
-  public abstract getHeight(): number;
-
-  public abstract render(): void;
-
-  protected getPositionToDraw(): IPosition {
+  public getAbsolutePosition(): IPosition {
     let x;
     let y;
 
@@ -163,6 +157,12 @@ export abstract class AbstractCanvasGlyph implements IGlyph {
 
     return { x, y };
   }
+
+  public abstract getWidth(): number;
+
+  public abstract getHeight(): number;
+
+  public abstract render(): void;
 
   private internalMoveTo() {
     if (this.movingTo) {
@@ -220,19 +220,28 @@ export abstract class AbstractCanvasGlyph implements IGlyph {
           const s = this.moving.speed;
           const dir = this.moving.direction;
 
+          let hMult =
+            dir === Direction.LEFT ? -1 : dir === Direction.RIGHT ? 1 : 0;
+          let vMult =
+            dir === Direction.UP ? -1 : dir === Direction.DOWN ? 1 : 0;
+
+          if (
+            this.origin === Origin.BOTTOM_RIGHT ||
+            this.origin === Origin.TOP_RIGHT
+          ) {
+            hMult *= -1;
+          }
+          if (
+            this.origin === Origin.BOTTOM_RIGHT ||
+            this.origin === Origin.BOTTOM_LEFT ||
+            this.origin === Origin.BOTTOM_CENTER
+          ) {
+            vMult *= -1;
+          }
+
           this.position = {
-            x:
-              dir === Direction.LEFT
-                ? this.position.x - s
-                : dir === Direction.RIGHT
-                ? this.position.x + s
-                : this.position.x,
-            y:
-              dir === Direction.UP
-                ? this.position.y - s
-                : dir === Direction.DOWN
-                ? this.position.y + s
-                : this.position.y,
+            x: this.position.x + s * hMult,
+            y: this.position.y + s * vMult,
           };
 
           this.renderEngine.render();

@@ -1,3 +1,4 @@
+import { GlyphGroup } from "./GlyphGroup";
 import { IGlyph } from "./IGlyph";
 import { IGlyphCircle } from "./IGlyphCircle";
 import { IGlyphImage } from "./IGlyphImage";
@@ -6,7 +7,7 @@ import { IGlyphSprite } from "./IGlyphSprite";
 import { IGlyphText } from "./IGlyphText";
 
 export interface IGlyphFactory {
-  group(glyphs: IGlyph[]): void;
+  group(glyphs: IGlyph[]): GlyphGroup;
 
   circle(color: string, x: number, y: number, radio: number): IGlyphCircle;
 

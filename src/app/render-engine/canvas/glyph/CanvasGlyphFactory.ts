@@ -1,3 +1,4 @@
+import { GlyphGroup } from "../../glyph/GlyphGroup";
 import { IGlyph } from "../../glyph/IGlyph";
 import { IGlyphCircle } from "../../glyph/IGlyphCircle";
 import { IGlyphFactory } from "../../glyph/IGlyphFactory";
@@ -19,8 +20,11 @@ export class CanvasGlyphFactory implements IGlyphFactory {
     this.renderEngine = renderEngine;
   }
 
-  public group(glyphs: IGlyph[]): void {
-    throw new Error("Method not implemented.");
+  public group(glyphs: IGlyph[]): GlyphGroup {
+    const glyph = new GlyphGroup();
+    glyphs.forEach((g) => glyph.add(g));
+
+    return glyph;
   }
 
   public circle(

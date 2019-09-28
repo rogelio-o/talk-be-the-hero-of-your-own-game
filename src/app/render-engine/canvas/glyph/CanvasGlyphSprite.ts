@@ -108,7 +108,7 @@ export class CanvasGlyphSprite extends AbstractCanvasGlyph
 
       const positionToDraw = this.getPositionToDraw();
       let x = positionToDraw.x;
-      let y = positionToDraw.y;
+      const y = positionToDraw.y;
 
       if (this.flipped) {
         context.translate(x, y);

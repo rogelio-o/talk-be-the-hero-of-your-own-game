@@ -1,5 +1,4 @@
-import { HorizontalAlign } from "../../../utils/HorizontalAlign";
-import { VerticalAlign } from "../../../utils/VerticalAlign";
+import { Origin } from "../../../utils/Origin";
 import { IGlyphText } from "../../glyph/IGlyphText";
 import { CanvasRenderEngine } from "../CanvasRenderEngine";
 import { AbstractCanvasGlyph } from "./AbstractCanvasGlyph";
@@ -39,23 +38,23 @@ export class CanvasGlyphText extends AbstractCanvasGlyph implements IGlyphText {
     const context = this.renderEngine.canvas.getContext("2d");
 
     if (context) {
-      let y = this.position.y;
-
-      if (this.verticalAlign === VerticalAlign.TOP) {
-        y = y + this.h;
-      } else if (this.verticalAlign === VerticalAlign.MIDDLE) {
-        y = y + this.h / 2;
+      switch (this.origin) {
+        case Origin.BOTTOM_CENTER:
+        case Origin.TOP_CENTER:
+        case Origin.CENTER:
+          context.textAlign = "center";
+          break;
+        case Origin.BOTTOM_RIGHT:
+        case Origin.TOP_RIGHT:
+          context.textAlign = "right";
+        default:
+          context.textAlign = "left";
       }
 
-      context.textAlign =
-        this.horizontalAlign === HorizontalAlign.CENTER
-          ? "center"
-          : this.horizontalAlign === HorizontalAlign.RIGHT
-          ? "right"
-          : "left";
+      const positionToDraw = this.getPositionToDraw();
       context.font = this.h + "px Arial";
       context.fillStyle = this.color;
-      context.fillText(this.text, this.position.x, y);
+      context.fillText(this.text, positionToDraw.x, positionToDraw.y + this.h);
     }
   }
 }

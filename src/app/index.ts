@@ -8,8 +8,7 @@ import { BrowserSoundEngine } from "./sound-engine/browser/BrowserSoundEngine";
 import { ISoundEngine } from "./sound-engine/ISoundEngine";
 import { collide } from "./utils/collisionUtils";
 import { Direction } from "./utils/Direction";
-import { HorizontalAlign } from "./utils/HorizontalAlign";
-import { VerticalAlign } from "./utils/VerticalAlign";
+import { Origin } from "./utils/Origin";
 
 const canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
 const renderEngine: IRenderEngine = new CanvasRenderEngine(canvas);
@@ -26,8 +25,7 @@ renderEngine.add(background);
 const loadingText = renderEngine
   .factory()
   .text("Loading...", "black", 250, 100, 20);
-loadingText.setHorizontalAlign(HorizontalAlign.CENTER);
-loadingText.setVerticalAlign(VerticalAlign.MIDDLE);
+loadingText.setOrigin(Origin.CENTER);
 renderEngine.add(loadingText);
 
 const resources = Promise.all([
@@ -41,26 +39,22 @@ resources
 
     const lifeBackgroundPlayer1 = renderEngine
       .factory()
-      .rectangle("yellow", 20, 200, 200, 30);
-    lifeBackgroundPlayer1.setVerticalAlign(VerticalAlign.BOTTOM);
+      .rectangle("yellow", 20, 20, 200, 30);
+    lifeBackgroundPlayer1.setOrigin(Origin.BOTTOM_LEFT);
     renderEngine.add(lifeBackgroundPlayer1);
 
     const lifeBackgroundPlayer2 = renderEngine
       .factory()
-      .rectangle("yellow", 500, 200, 200, 30);
-    lifeBackgroundPlayer2.setVerticalAlign(VerticalAlign.BOTTOM);
-    lifeBackgroundPlayer2.setHorizontalAlign(HorizontalAlign.RIGHT);
+      .rectangle("yellow", 20, 20, 200, 30);
+    lifeBackgroundPlayer2.setOrigin(Origin.BOTTOM_RIGHT);
     renderEngine.add(lifeBackgroundPlayer2);
 
-    const lifePlayer1 = renderEngine.factory().rectangle("red", 20, 200, 0, 30);
-    lifePlayer1.setVerticalAlign(VerticalAlign.BOTTOM);
+    const lifePlayer1 = renderEngine.factory().rectangle("red", 20, 20, 0, 30);
+    lifePlayer1.setOrigin(Origin.BOTTOM_LEFT);
     renderEngine.add(lifePlayer1);
 
-    const lifePlayer2 = renderEngine
-      .factory()
-      .rectangle("red", 500, 200, 0, 30);
-    lifePlayer2.setVerticalAlign(VerticalAlign.BOTTOM);
-    lifePlayer2.setHorizontalAlign(HorizontalAlign.RIGHT);
+    const lifePlayer2 = renderEngine.factory().rectangle("red", 20, 20, 0, 30);
+    lifePlayer2.setOrigin(Origin.BOTTOM_RIGHT);
     renderEngine.add(lifePlayer2);
 
     renderEngine.add(player1);

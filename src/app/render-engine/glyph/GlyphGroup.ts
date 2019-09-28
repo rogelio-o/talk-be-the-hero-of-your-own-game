@@ -1,7 +1,6 @@
 import { Direction } from "../../utils/Direction";
-import { HorizontalAlign } from "../../utils/HorizontalAlign";
 import { IPosition } from "../../utils/IPosition";
-import { VerticalAlign } from "../../utils/VerticalAlign";
+import { Origin } from "../../utils/Origin";
 import { IGlyph } from "./IGlyph";
 
 export class GlyphGroup implements IGlyph {
@@ -75,12 +74,8 @@ export class GlyphGroup implements IGlyph {
     return { x, y };
   }
 
-  public setVerticalAlign(align: VerticalAlign): void {
-    this.glyphs.forEach((g) => g.setVerticalAlign(align));
-  }
-
-  public setHorizontalAlign(align: HorizontalAlign): void {
-    this.glyphs.forEach((g) => g.setHorizontalAlign(align));
+  public setOrigin(origin: Origin): void {
+    this.glyphs.forEach((g) => g.setOrigin(origin));
   }
 
   public getWidth(): number {

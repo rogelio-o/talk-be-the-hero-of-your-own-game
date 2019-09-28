@@ -1,14 +1,11 @@
 import { Direction } from "../../../utils/Direction";
-import { HorizontalAlign } from "../../../utils/HorizontalAlign";
 import { IPosition } from "../../../utils/IPosition";
-import { VerticalAlign } from "../../../utils/VerticalAlign";
+import { Origin } from "../../../utils/Origin";
 import { IGlyph } from "../../glyph/IGlyph";
 import { CanvasRenderEngine } from "../CanvasRenderEngine";
 
 export abstract class AbstractCanvasGlyph implements IGlyph {
-  protected horizontalAlign: HorizontalAlign = HorizontalAlign.LEFT;
-
-  protected verticalAlign: VerticalAlign = VerticalAlign.TOP;
+  protected origin: Origin = Origin.TOP_LEFT;
 
   protected position: IPosition = { x: 0, y: 0 };
 
@@ -103,12 +100,8 @@ export abstract class AbstractCanvasGlyph implements IGlyph {
     return this.position;
   }
 
-  public setVerticalAlign(align: VerticalAlign): void {
-    this.verticalAlign = align;
-  }
-
-  public setHorizontalAlign(align: HorizontalAlign): void {
-    this.horizontalAlign = align;
+  public setOrigin(origin: Origin): void {
+    this.origin = origin;
   }
 
   public abstract getWidth(): number;
@@ -118,19 +111,54 @@ export abstract class AbstractCanvasGlyph implements IGlyph {
   public abstract render(): void;
 
   protected getPositionToDraw(): IPosition {
-    let x = this.position.x;
-    let y = this.position.y;
+    let x;
+    let y;
 
-    if (this.horizontalAlign === HorizontalAlign.CENTER) {
-      x = x - this.getWidth() / 2;
-    } else if (this.horizontalAlign === HorizontalAlign.RIGHT) {
-      x = x - this.getWidth();
-    }
-
-    if (this.verticalAlign === VerticalAlign.MIDDLE) {
-      y = y - this.getHeight() / 2;
-    } else if (this.verticalAlign === VerticalAlign.BOTTOM) {
-      y = y - this.getHeight();
+    switch (this.origin) {
+      case Origin.BOTTOM_LEFT:
+        x = this.position.x;
+        y =
+          this.renderEngine.canvas.height - this.position.y - this.getHeight();
+        break;
+      case Origin.BOTTOM_RIGHT:
+        x = this.renderEngine.canvas.width - this.position.x - this.getWidth();
+        y =
+          this.renderEngine.canvas.height - this.position.y - this.getHeight();
+        break;
+      case Origin.CENTER:
+        x =
+          this.renderEngine.canvas.width / 2 +
+          this.position.x -
+          this.getWidth() / 2;
+        y =
+          this.renderEngine.canvas.height / 2 +
+          this.position.y -
+          this.getHeight() / 2;
+        break;
+      case Origin.TOP_CENTER:
+        x =
+          this.renderEngine.canvas.width / 2 +
+          this.position.x -
+          this.getWidth() / 2;
+        y = this.position.y;
+        break;
+      case Origin.BOTTOM_CENTER:
+        x =
+          this.renderEngine.canvas.width / 2 +
+          this.position.x -
+          this.getWidth() / 2;
+        y =
+          this.renderEngine.canvas.height - this.position.y - this.getHeight();
+        break;
+      case Origin.TOP_RIGHT:
+        x = this.renderEngine.canvas.width - this.position.x - this.getWidth();
+        y = this.position.y;
+        break;
+      case Origin.TOP_LEFT:
+      default:
+        x = this.position.x;
+        y = this.position.y;
+        break;
     }
 
     return { x, y };

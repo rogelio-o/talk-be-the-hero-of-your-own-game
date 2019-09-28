@@ -1,5 +1,3 @@
-import { HorizontalAlign } from "../../../utils/HorizontalAlign";
-import { VerticalAlign } from "../../../utils/VerticalAlign";
 import { IGlyphCircle } from "../../glyph/IGlyphCircle";
 import { CanvasRenderEngine } from "../CanvasRenderEngine";
 import { AbstractCanvasGlyph } from "./AbstractCanvasGlyph";
@@ -34,21 +32,10 @@ export class CanvasGlyphCircle extends AbstractCanvasGlyph
     const context = this.renderEngine.canvas.getContext("2d");
 
     if (context) {
-      let x = this.position.x;
-      let y = this.position.y;
       const r = this.r;
-
-      if (this.horizontalAlign === HorizontalAlign.LEFT) {
-        x = x + r;
-      } else if (this.horizontalAlign === HorizontalAlign.RIGHT) {
-        x = x - r;
-      }
-
-      if (this.verticalAlign === VerticalAlign.TOP) {
-        y = y + r;
-      } else if (this.verticalAlign === VerticalAlign.BOTTOM) {
-        y = y - r;
-      }
+      const positionToDraw = this.getPositionToDraw();
+      const x = positionToDraw.x + r;
+      const y = positionToDraw.y + r;
 
       context.beginPath();
       context.arc(x, y, r, 0, 2 * Math.PI, false);

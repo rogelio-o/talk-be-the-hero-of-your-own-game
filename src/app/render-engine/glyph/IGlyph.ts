@@ -1,7 +1,6 @@
 import { Direction } from "../../utils/Direction";
-import { HorizontalAlign } from "../../utils/HorizontalAlign";
 import { IPosition } from "../../utils/IPosition";
-import { VerticalAlign } from "../../utils/VerticalAlign";
+import { Origin } from "../../utils/Origin";
 
 export interface IGlyph {
   moveTo(x: number, y: number, speed?: number, callback?: () => void): void;
@@ -18,9 +17,7 @@ export interface IGlyph {
 
   getPosition(): IPosition;
 
-  setVerticalAlign(align: VerticalAlign): void;
-
-  setHorizontalAlign(align: HorizontalAlign): void;
+  setOrigin(origin: Origin): void;
 
   getWidth(): number;
 

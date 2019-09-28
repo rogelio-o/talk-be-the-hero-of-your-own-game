@@ -63,8 +63,8 @@ export class GlyphGroup implements IGlyph {
   }
 
   public getPosition(): IPosition {
-    let x = 0;
-    let y = 0;
+    let x = Number.MAX_VALUE;
+    let y = Number.MAX_VALUE;
 
     this.glyphs.forEach((g) => {
       x = Math.min(x, g.getAbsolutePosition().x);
@@ -105,8 +105,8 @@ export class GlyphGroup implements IGlyph {
     let y = 0;
 
     this.glyphs.forEach((g) => {
-      x = Math.max(x, g.getPosition().x + g.getWidth());
-      y = Math.max(y, g.getPosition().y + g.getHeight());
+      x = Math.max(x, g.getAbsolutePosition().x + g.getWidth());
+      y = Math.max(y, g.getAbsolutePosition().y + g.getHeight());
     });
 
     return { x, y };

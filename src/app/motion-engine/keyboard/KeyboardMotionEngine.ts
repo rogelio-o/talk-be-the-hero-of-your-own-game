@@ -78,7 +78,8 @@ export class KeyboardMotionEngine implements IMotionEngine {
       const y = e.pageY - elemTop;
 
       Object.values(this.clickCallbacks).forEach((cb) => {
-        const cbPosition = cb.glyph.getPosition();
+        const cbPosition = cb.glyph.getAbsolutePosition();
+
         if (
           y > cbPosition.y &&
           y < cbPosition.y + cb.glyph.getHeight() &&

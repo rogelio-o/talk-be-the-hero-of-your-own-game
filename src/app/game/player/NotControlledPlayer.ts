@@ -5,7 +5,7 @@ export class NotControlledPlayer extends AbstractPlayer implements IPlayer {
   private intervalId?: any;
 
   public startMoving(): void {
-    /*this.intervalId = setInterval(() => {
+    this.intervalId = setInterval(() => {
       const rand = Math.floor(Math.random() * 10);
 
       if (rand < 4) {
@@ -21,7 +21,7 @@ export class NotControlledPlayer extends AbstractPlayer implements IPlayer {
       } else {
         this.changePunching(false);
       }
-    }, 500);*/
+    }, 500);
   }
 
   public stopMoving(): void {

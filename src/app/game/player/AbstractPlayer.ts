@@ -83,9 +83,7 @@ export abstract class AbstractPlayer implements IPlayer {
           collide(
             this.character.glyph(),
             this.otherPlayer.character.glyph(),
-            {
-              right: 10,
-            },
+            {},
             {
               left: this.character.glyph().getWidth() / 4,
               right: this.otherPlayer.character.glyph().getWidth() / 4,

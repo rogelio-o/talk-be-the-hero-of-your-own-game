@@ -47,8 +47,10 @@ export class CanvasGlyphText extends AbstractCanvasGlyph implements IGlyphText {
         case Origin.BOTTOM_RIGHT:
         case Origin.TOP_RIGHT:
           context.textAlign = "right";
+          break;
         default:
           context.textAlign = "left";
+          break;
       }
 
       const positionToDraw = this.getAbsolutePosition();

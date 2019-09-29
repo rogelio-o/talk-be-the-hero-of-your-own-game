@@ -75,4 +75,8 @@ export class BrowserSoundEngine implements ISoundEngine {
       sound.currentTime = 0;
     }
   }
+
+  public stopAll(): void {
+    Object.keys(this.sounds).forEach((key) => this.stop(key));
+  }
 }

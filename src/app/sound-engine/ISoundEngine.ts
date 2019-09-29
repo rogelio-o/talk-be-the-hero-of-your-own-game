@@ -12,4 +12,6 @@ export interface ISoundEngine {
   stop(id: string): void;
 
   stopLoop(id: string): void;
+
+  stopAll(): void;
 }

@@ -151,6 +151,8 @@ export class KeyboardMotionEngine implements IMotionEngine {
       case Intention.PUNCH:
         return 32;
       case Intention.PAUSE:
+        return 19;
+      case Intention.EXIT:
       default:
         return 27;
     }

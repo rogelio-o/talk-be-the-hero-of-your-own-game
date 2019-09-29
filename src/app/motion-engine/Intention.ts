@@ -5,4 +5,5 @@ export enum Intention {
   UP,
   PUNCH,
   PAUSE,
+  EXIT,
 }

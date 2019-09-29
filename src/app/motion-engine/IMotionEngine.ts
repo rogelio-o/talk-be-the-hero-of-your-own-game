@@ -21,4 +21,6 @@ export interface IMotionEngine {
   removeClick(id: string): void;
 
   removeIntention(id: string): void;
+
+  removeAll(): void;
 }

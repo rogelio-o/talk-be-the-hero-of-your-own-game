@@ -42,4 +42,12 @@ export class CanvasRenderEngine implements IRenderEngine {
   public factory(): IGlyphFactory {
     return this.glyphFactory;
   }
+
+  public getScreenWidth(): number {
+    return this.canvas.width;
+  }
+
+  public getScreenHeight(): number {
+    return this.canvas.height;
+  }
 }

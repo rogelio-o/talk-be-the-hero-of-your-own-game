@@ -11,4 +11,8 @@ export interface IRenderEngine {
   clear(): void;
 
   factory(): IGlyphFactory;
+
+  getScreenWidth(): number;
+
+  getScreenHeight(): number;
 }

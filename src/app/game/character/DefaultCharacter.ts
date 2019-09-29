@@ -1,6 +1,7 @@
 import { IGlyphSprite } from "../../render-engine/glyph/IGlyphSprite";
+import { IRenderEngine } from "../../render-engine/IRenderEngine";
 import { ISoundEngine } from "../../sound-engine/ISoundEngine";
-import { collide } from "../../utils/collisionUtils";
+import { collide, outOfScreen } from "../../utils/collisionUtils";
 import { Direction } from "../../utils/Direction";
 import { ICharacter } from "./ICharacter";
 
@@ -21,6 +22,8 @@ enum CharacterStatus {
 }
 
 export class DefaultCharacter implements ICharacter {
+  private renderEngine: IRenderEngine;
+
   private soundEngine: ISoundEngine;
 
   private spriteGlyph: IGlyphSprite;
@@ -36,6 +39,7 @@ export class DefaultCharacter implements ICharacter {
   private status: CharacterStatus = CharacterStatus.WAITING;
 
   constructor(
+    renderEngine: IRenderEngine,
     soundEngine: ISoundEngine,
     spriteGlyph: IGlyphSprite,
     sequences: ICharacterSequences,
@@ -43,6 +47,7 @@ export class DefaultCharacter implements ICharacter {
     damage: number,
     name: string,
   ) {
+    this.renderEngine = renderEngine;
     this.soundEngine = soundEngine;
     this.spriteGlyph = spriteGlyph;
     this.sequences = sequences;
@@ -71,6 +76,15 @@ export class DefaultCharacter implements ICharacter {
     this.spriteGlyph.sequence(this.sequences.walkingLeft);
     this.spriteGlyph.move(Direction.LEFT, this.speed, () => {
       if (
+        outOfScreen(
+          this.spriteGlyph,
+          this.renderEngine,
+          { left: this.speed },
+          { bottom: this.spriteGlyph.getWidth() / 4 },
+        )
+      ) {
+        this.spriteGlyph.stop();
+      } else if (
         otherCharacter &&
         collide(
           this.spriteGlyph,
@@ -97,6 +111,15 @@ export class DefaultCharacter implements ICharacter {
     this.spriteGlyph.sequence(this.sequences.walkingRight);
     this.spriteGlyph.move(Direction.RIGHT, this.speed, () => {
       if (
+        outOfScreen(
+          this.spriteGlyph,
+          this.renderEngine,
+          { right: this.speed },
+          { bottom: this.spriteGlyph.getWidth() / 4 },
+        )
+      ) {
+        this.spriteGlyph.stop();
+      } else if (
         otherCharacter &&
         collide(
           this.spriteGlyph,
@@ -144,6 +167,7 @@ export class DefaultCharacter implements ICharacter {
 
   public clone(): ICharacter {
     return new DefaultCharacter(
+      this.renderEngine,
       this.soundEngine,
       Object.assign(
         Object.create(Object.getPrototypeOf(this.spriteGlyph)),

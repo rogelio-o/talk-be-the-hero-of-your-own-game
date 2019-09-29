@@ -93,6 +93,7 @@ export class DefaultTemplate implements ITemplate {
         .then((g) => {
           this.characters.push(
             new DefaultCharacter(
+              this.renderEngine,
               this.soundEngine,
               g,
               c.sequences,

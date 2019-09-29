@@ -80,9 +80,17 @@ export abstract class AbstractPlayer implements IPlayer {
         if (
           !this.gettingAPunch &&
           this.otherPlayer &&
-          collide(this.character.glyph(), this.otherPlayer.character.glyph(), {
-            right: 10,
-          })
+          collide(
+            this.character.glyph(),
+            this.otherPlayer.character.glyph(),
+            {
+              right: 10,
+            },
+            {
+              left: this.character.glyph().getWidth() / 4,
+              right: this.otherPlayer.character.glyph().getWidth() / 4,
+            },
+          )
         ) {
           this.otherPlayer.punch(this.character.getDamage());
         }

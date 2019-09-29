@@ -72,10 +72,17 @@ export class DefaultCharacter implements ICharacter {
     this.spriteGlyph.move(Direction.LEFT, this.speed, () => {
       if (
         otherCharacter &&
-        collide(this.spriteGlyph, otherCharacter.glyph(), {
-          left: -this.spriteGlyph.getWidth(),
-          right: -this.spriteGlyph.getWidth() - 5,
-        })
+        collide(
+          this.spriteGlyph,
+          otherCharacter.glyph(),
+          {
+            left: this.speed,
+          },
+          {
+            left: this.spriteGlyph.getWidth() / 2,
+            right: this.spriteGlyph.getWidth() / 2,
+          },
+        )
       ) {
         this.spriteGlyph.pause();
       }
@@ -91,9 +98,17 @@ export class DefaultCharacter implements ICharacter {
     this.spriteGlyph.move(Direction.RIGHT, this.speed, () => {
       if (
         otherCharacter &&
-        collide(this.spriteGlyph, otherCharacter.glyph(), {
-          right: -this.spriteGlyph.getWidth(),
-        })
+        collide(
+          this.spriteGlyph,
+          otherCharacter.glyph(),
+          {
+            right: this.speed,
+          },
+          {
+            left: this.spriteGlyph.getWidth() / 2,
+            right: this.spriteGlyph.getWidth() / 2,
+          },
+        )
       ) {
         this.spriteGlyph.pause();
       }

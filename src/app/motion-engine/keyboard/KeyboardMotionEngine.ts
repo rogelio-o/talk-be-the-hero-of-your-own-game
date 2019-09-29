@@ -51,6 +51,11 @@ export class KeyboardMotionEngine implements IMotionEngine {
     delete this.intentionsCallback[id];
   }
 
+  public removeAll(): void {
+    this.clickCallbacks = {};
+    this.intentionsCallback = {};
+  }
+
   public listen(): void {
     this.canvas.addEventListener("mousedown", (e) => {
       const elemLeft = this.canvas.offsetLeft;

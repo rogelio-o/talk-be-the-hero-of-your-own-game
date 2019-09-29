@@ -1,6 +1,7 @@
 import { DefaultCharacter } from "../../game/character/DefaultCharacter";
 import { ICharacter } from "../../game/character/ICharacter";
 import { IMotionEngine } from "../../motion-engine/IMotionEngine";
+import { Intention } from "../../motion-engine/Intention";
 import { GlyphGroup } from "../../render-engine/glyph/GlyphGroup";
 import { IGlyph } from "../../render-engine/glyph/IGlyph";
 import { IGlyphImage } from "../../render-engine/glyph/IGlyphImage";
@@ -10,8 +11,7 @@ import { IRenderEngine } from "../../render-engine/IRenderEngine";
 import { ISoundEngine } from "../../sound-engine/ISoundEngine";
 import { Origin } from "../../utils/Origin";
 import { IMatchTemplate } from "../IMatchTemplate";
-import { IMenuItem } from "../IMenuItem";
-import { ITemplate } from "../ITemplate";
+import { IHomeActions, IMatchActions, ITemplate } from "../ITemplate";
 
 const rawCharacters = [
   {
@@ -111,6 +111,7 @@ export class DefaultTemplate implements ITemplate {
   public loading(percentage: number): void {
     this.renderEngine.clear();
     this.soundEngine.stopAll();
+    this.motionEngine.removeAll();
 
     const background = this.renderEngine
       .factory()
@@ -126,29 +127,40 @@ export class DefaultTemplate implements ITemplate {
     this.renderEngine.add(barText);
   }
 
-  public menu(items: IMenuItem[]): void {
+  public home(actions: IHomeActions): void {
     this.renderEngine.clear();
     this.soundEngine.stopAll();
+    this.motionEngine.removeAll();
 
     const background = this.renderEngine
       .factory()
       .rectangle("black", 0, 0, "100%", "100%");
-    const glyphs = items.map((item, index) => {
-      const glyph = this.menuItem(item.text, items.length, index);
-      this.motionEngine.click("menu" + index, glyph, () =>
-        item.onClick(this.characters[0].clone(), this.characters[0].clone()),
-      );
-
-      return glyph;
-    });
-
     this.renderEngine.add(background);
-    glyphs.forEach((g) => this.renderEngine.add(g));
+
+    const numItems = 1;
+    const singlePlayerItem = this.menuItem("SINGLE PLAYER", numItems, 0);
+    this.motionEngine.click("singlePlayerItem", singlePlayerItem, () =>
+      actions.onSinglePlayerMatch(
+        this.characters[0].clone(),
+        this.characters[0].clone(),
+      ),
+    );
+    this.renderEngine.add(singlePlayerItem);
   }
 
-  public match(scenario?: string): IMatchTemplate {
+  public match(actions: IMatchActions, scenario?: string): IMatchTemplate {
     this.renderEngine.clear();
     this.soundEngine.stopAll();
+    this.motionEngine.removeAll();
+
+    this.motionEngine.intention(
+      "go-back",
+      Intention.EXIT,
+      () => {
+        /* NOTHING */
+      },
+      () => actions.onGoHome(),
+    );
 
     this.renderEngine.add(this.images[scenario || "scenario1"]);
 
@@ -175,6 +187,33 @@ export class DefaultTemplate implements ITemplate {
     );
   }
 
+  private matchGameOver(player: number): void {
+    const gameOverText = this.renderEngine
+      .factory()
+      .text("PLAYER " + player + " WINS", "black", 0, 0, 50);
+    gameOverText.setOrigin(Origin.CENTER);
+
+    const goBackText = this.renderEngine
+      .factory()
+      .text("ESC to go back", "black", 0, 50, 20);
+    goBackText.setOrigin(Origin.CENTER);
+
+    this.renderEngine.add(
+      this.renderEngine.factory().group([gameOverText, goBackText]),
+    );
+  }
+
+  private addPlayersToMatch(c1: ICharacter, c2: ICharacter) {
+    const g1 = c1.glyph();
+    g1.setOrigin(Origin.BOTTOM_LEFT);
+    this.renderEngine.add(g1);
+
+    const g2 = c2.glyph();
+    g2.setOrigin(Origin.BOTTOM_RIGHT);
+    g2.flip();
+    this.renderEngine.add(g2);
+  }
+
   private createPlayerLife(player: number): IPlayerLifeBar {
     return {
       background: this.renderEngine
@@ -199,29 +238,10 @@ export class DefaultTemplate implements ITemplate {
     this.renderEngine.add(playerLife.text);
   }
 
-  private matchGameOver(player: number): void {
-    const gameOverText = this.renderEngine
-      .factory()
-      .text("PLAYER " + player + " WINS", "black", 0, 0, 50);
-    gameOverText.setOrigin(Origin.CENTER);
-    this.renderEngine.add(gameOverText);
-  }
-
-  private addPlayersToMatch(c1: ICharacter, c2: ICharacter) {
-    const g1 = c1.glyph();
-    g1.setOrigin(Origin.BOTTOM_LEFT);
-    this.renderEngine.add(g1);
-
-    const g2 = c2.glyph();
-    g2.setOrigin(Origin.BOTTOM_RIGHT);
-    g2.flip();
-    this.renderEngine.add(g2);
-  }
-
   private menuItem(text: string, size: number, index: number): IGlyph {
     const glyphRectangle: IGlyphRectangle = this.renderEngine
       .factory()
-      .rectangle("#930b0b", 0, index * 50 - (size * 50) / 2, 150, 30);
+      .rectangle("#930b0b", 0, index * 50 - (size * 50) / 2, 200, 30);
     glyphRectangle.setOrigin(Origin.CENTER);
 
     const glyphText: IGlyphText = this.renderEngine

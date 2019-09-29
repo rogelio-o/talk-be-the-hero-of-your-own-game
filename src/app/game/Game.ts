@@ -26,13 +26,15 @@ export class Game {
   }
 
   private showMenu() {
-    this.template.menu([
-      { text: "PLAY", onClick: (c1, c2) => this.newMatch(c1, c2) },
-    ]);
+    this.template.home({
+      onSinglePlayerMatch: (c1, c2) => this.newSinglePlayerMatch(c1, c2),
+    });
   }
 
-  private newMatch(c1: ICharacter, c2: ICharacter): void {
-    const matchTemplate: IMatchTemplate = this.template.match();
+  private newSinglePlayerMatch(c1: ICharacter, c2: ICharacter): void {
+    const matchTemplate: IMatchTemplate = this.template.match({
+      onGoHome: () => this.showMenu(),
+    });
     const match: IMatch = new SinglePlayerMatch(
       matchTemplate,
       this.motionEngine,

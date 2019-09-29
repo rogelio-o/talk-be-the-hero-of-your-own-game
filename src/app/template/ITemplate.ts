@@ -1,12 +1,20 @@
+import { ICharacter } from "../game/character/ICharacter";
 import { IMatchTemplate } from "./IMatchTemplate";
-import { IMenuItem } from "./IMenuItem";
+
+export interface IMatchActions {
+  onGoHome: () => void;
+}
+
+export interface IHomeActions {
+  onSinglePlayerMatch: (c1: ICharacter, c2: ICharacter) => void;
+}
 
 export interface ITemplate {
   loadResources(callback: (num: number, total: number) => void): void;
 
   loading(percentage: number): void;
 
-  menu(items: IMenuItem[]): void;
+  home(actions: IHomeActions): void;
 
-  match(scenario?: string): IMatchTemplate;
+  match(actions: IMatchActions, scenario?: string): IMatchTemplate;
 }

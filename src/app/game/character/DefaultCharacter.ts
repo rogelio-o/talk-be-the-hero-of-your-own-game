@@ -169,10 +169,7 @@ export class DefaultCharacter implements ICharacter {
     return new DefaultCharacter(
       this.renderEngine,
       this.soundEngine,
-      Object.assign(
-        Object.create(Object.getPrototypeOf(this.spriteGlyph)),
-        this.spriteGlyph,
-      ),
+      this.spriteGlyph.clone() as IGlyphSprite,
       this.sequences,
       this.speed,
       this.damage,

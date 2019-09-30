@@ -6,6 +6,7 @@ import { GlyphGroup } from "../../render-engine/glyph/GlyphGroup";
 import { IGlyph } from "../../render-engine/glyph/IGlyph";
 import { IGlyphImage } from "../../render-engine/glyph/IGlyphImage";
 import { IGlyphRectangle } from "../../render-engine/glyph/IGlyphRectangle";
+import { IGlyphSprite } from "../../render-engine/glyph/IGlyphSprite";
 import { IGlyphText } from "../../render-engine/glyph/IGlyphText";
 import { IRenderEngine } from "../../render-engine/IRenderEngine";
 import { ISoundEngine } from "../../sound-engine/ISoundEngine";
@@ -138,14 +139,23 @@ export class DefaultTemplate implements ITemplate {
       .rectangle("black", 0, 0, "100%", "100%");
     this.renderEngine.add(background);
 
+    let playerA: ICharacter | undefined;
+    let playerB: ICharacter | undefined;
+    this.createPlayersSelector(Origin.TOP_LEFT, (c) => (playerA = c));
+    this.createPlayersSelector(Origin.TOP_RIGHT, (c) => (playerB = c));
+
     const numItems = 1;
     const singlePlayerItem = this.menuItem("SINGLE PLAYER", numItems, 0);
-    this.motionEngine.click("singlePlayerItem", singlePlayerItem, () =>
-      actions.onSinglePlayerMatch(
-        this.characters[0].clone(),
-        this.characters[0].clone(),
-      ),
-    );
+    this.motionEngine.click("singlePlayerItem", singlePlayerItem, () => {
+      if (playerA && playerB) {
+        actions.onSinglePlayerMatch(
+          this.characters[0].clone(),
+          this.characters[0].clone(),
+        );
+      } else {
+        alert("Please, select two players.");
+      }
+    });
     this.renderEngine.add(singlePlayerItem);
   }
 
@@ -237,6 +247,77 @@ export class DefaultTemplate implements ITemplate {
     this.renderEngine.add(playerLife.background);
     this.renderEngine.add(playerLife.fill);
     this.renderEngine.add(playerLife.text);
+  }
+
+  private createPlayersSelector(
+    origin: Origin,
+    selectCallback: (c: ICharacter) => void,
+  ): void {
+    const rectangles: IGlyphRectangle[] = [];
+    let row = 0;
+    let column = 0;
+
+    this.characters.forEach((c, index) => {
+      const w = 90;
+      const h = 90;
+      const x = column * (w + 10) + 50;
+      const y = row * (h + 30) + 50;
+
+      const selectPlayerRectangle = this.createCharacterRectangle(x, y, w, h);
+      const characterGlyph = c.glyph().clone() as IGlyphSprite;
+      characterGlyph.setPosition({ x, y });
+      characterGlyph.setWidth(w);
+      const characterText = this.renderEngine
+        .factory()
+        .text(c.getName(), "white", x, y + h + 5, 14);
+      const selectCharacter = this.renderEngine
+        .factory()
+        .group([
+          selectPlayerRectangle.rectangle,
+          selectPlayerRectangle.fill,
+          characterGlyph,
+          characterText,
+        ]);
+      selectCharacter.setOrigin(origin);
+
+      this.motionEngine.click(
+        "click" + origin + index,
+        selectCharacter,
+        () => {
+          /* NONE */
+        },
+        () => {
+          rectangles.forEach((r) => r.setColor("white"));
+          selectPlayerRectangle.rectangle.setColor("#930b0b");
+          selectCallback(c);
+        },
+      );
+
+      rectangles.push(selectPlayerRectangle.rectangle);
+      this.renderEngine.add(selectCharacter);
+
+      column++;
+      if (column === 3) {
+        column = 0;
+        row++;
+      }
+    });
+  }
+
+  private createCharacterRectangle(
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+  ): { rectangle: IGlyphRectangle; fill: IGlyphRectangle } {
+    const rectangle = this.renderEngine
+      .factory()
+      .rectangle("white", x, y, w, h);
+    const fill = this.renderEngine
+      .factory()
+      .rectangle("black", x + 5, y + 5, w - 10, h - 10);
+
+    return { rectangle, fill };
   }
 
   private menuItem(text: string, size: number, index: number): IGlyph {

@@ -144,19 +144,30 @@ export class DefaultTemplate implements ITemplate {
     this.createPlayersSelector(Origin.TOP_LEFT, (c) => (playerA = c));
     this.createPlayersSelector(Origin.TOP_RIGHT, (c) => (playerB = c));
 
-    const numItems = 1;
+    const allowsPlayer2 = this.motionEngine.allowsPlayer2();
+    const numItems = allowsPlayer2 ? 2 : 1;
+
     const singlePlayerItem = this.menuItem("SINGLE PLAYER", numItems, 0);
     this.motionEngine.click("singlePlayerItem", singlePlayerItem, () => {
       if (playerA && playerB) {
-        actions.onSinglePlayerMatch(
-          this.characters[0].clone(),
-          this.characters[0].clone(),
-        );
+        actions.onSinglePlayerMatch(playerA, playerB);
       } else {
         alert("Please, select two players.");
       }
     });
     this.renderEngine.add(singlePlayerItem);
+
+    if (allowsPlayer2) {
+      const multiPlayerItem = this.menuItem("MULTI PLAYER", numItems, 1);
+      this.motionEngine.click("multiPlayerItem", multiPlayerItem, () => {
+        if (playerA && playerB) {
+          actions.onMultiPlayerMatch(playerA, playerB);
+        } else {
+          alert("Please, select two players.");
+        }
+      });
+      this.renderEngine.add(multiPlayerItem);
+    }
   }
 
   public match(actions: IMatchActions, scenario?: string): IMatchTemplate {

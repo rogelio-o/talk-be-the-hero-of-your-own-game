@@ -22,5 +22,7 @@ export interface IMotionEngine {
 
   removeIntention(id: string): void;
 
+  allowsPlayer2(): boolean;
+
   removeAll(): void;
 }

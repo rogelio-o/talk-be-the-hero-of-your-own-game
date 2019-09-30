@@ -7,6 +7,8 @@ export interface IMatchActions {
 
 export interface IHomeActions {
   onSinglePlayerMatch: (c1: ICharacter, c2: ICharacter) => void;
+
+  onMultiPlayerMatch: (c1: ICharacter, c2: ICharacter) => void;
 }
 
 export interface ITemplate {

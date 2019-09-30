@@ -51,6 +51,10 @@ export class KeyboardMotionEngine implements IMotionEngine {
     delete this.intentionsCallback[id];
   }
 
+  public allowsPlayer2(): boolean {
+    return true;
+  }
+
   public removeAll(): void {
     this.clickCallbacks = {};
     this.intentionsCallback = {};
@@ -150,6 +154,16 @@ export class KeyboardMotionEngine implements IMotionEngine {
         return 38;
       case Intention.PUNCH:
         return 32;
+      case Intention.LEFT_PLAYER_2:
+        return 65;
+      case Intention.RIGHT_PLAYER_2:
+        return 68;
+      case Intention.DOWN_PLAYER_2:
+        return 83;
+      case Intention.UP_PLAYER_2:
+        return 87;
+      case Intention.PUNCH_PLAYER_2:
+        return 16;
       case Intention.PAUSE:
         return 19;
       case Intention.EXIT:

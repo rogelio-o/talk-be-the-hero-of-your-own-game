@@ -2,12 +2,12 @@ import { IMotionEngine } from "../../motion-engine/IMotionEngine";
 import { IMatchTemplate } from "../../template/IMatchTemplate";
 import { ICharacter } from "../character/ICharacter";
 import { IPlayer } from "../player/IPlayer";
-import { NotControlledPlayer } from "../player/NotControlledPlayer";
 import { Playe1ControlledPlayer } from "../player/Player1ControlledPlayer";
+import { Playe2ControlledPlayer } from "../player/Player2ControlledPlayer";
 import { AbstractMatch } from "./AbstractMatch";
 import { IMatch } from "./IMatch";
 
-export class SinglePlayerMatch extends AbstractMatch implements IMatch {
+export class MultiPlayerMatch extends AbstractMatch implements IMatch {
   private motionEngine: IMotionEngine;
 
   constructor(matchTemplate: IMatchTemplate, motionEngine: IMotionEngine) {
@@ -20,6 +20,6 @@ export class SinglePlayerMatch extends AbstractMatch implements IMatch {
   }
 
   protected createPlayer2(c: ICharacter): IPlayer {
-    return new NotControlledPlayer(c);
+    return new Playe2ControlledPlayer(c, this.motionEngine);
   }
 }

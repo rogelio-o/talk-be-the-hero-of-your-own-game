@@ -158,6 +158,10 @@ export abstract class AbstractCanvasGlyph implements IGlyph {
     return { x, y };
   }
 
+  public clone(): IGlyph {
+    return Object.assign(Object.create(Object.getPrototypeOf(this)), this);
+  }
+
   public abstract getWidth(): number;
 
   public abstract getHeight(): number;

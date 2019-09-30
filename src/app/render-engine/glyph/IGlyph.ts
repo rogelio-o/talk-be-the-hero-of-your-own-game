@@ -26,4 +26,6 @@ export interface IGlyph {
   getHeight(): number;
 
   render(): void;
+
+  clone(): IGlyph;
 }

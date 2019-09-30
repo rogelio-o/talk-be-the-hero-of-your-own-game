@@ -100,6 +100,14 @@ export class GlyphGroup implements IGlyph {
     this.glyphs.forEach((g) => g.render());
   }
 
+  public clone(): IGlyph {
+    const group = new GlyphGroup();
+
+    this.glyphs.forEach((g) => group.add(g.clone()));
+
+    return group;
+  }
+
   private getRightBottomCorner(): IPosition {
     let x = 0;
     let y = 0;

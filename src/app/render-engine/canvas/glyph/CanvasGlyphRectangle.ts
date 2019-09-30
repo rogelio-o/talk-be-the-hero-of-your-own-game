@@ -16,11 +16,15 @@ export class CanvasGlyphRectangle extends AbstractCanvasGlyph
 
   public setColor(color: string): void {
     this.color = color;
+
+    this.renderEngine.render();
   }
 
   public setSize(w: number | string, h: number | string): void {
     this.w = w;
     this.h = h;
+
+    this.renderEngine.render();
   }
 
   public getWidth(): number {
